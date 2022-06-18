@@ -52,6 +52,7 @@ function new_traffic(){
     return traffic_;
 }
 
+start();
 animate();
 
 function save() {
@@ -84,6 +85,23 @@ function gen_cars(N, type){
 
 var prev_traffic_distance = 0;
 var traffic_skips = 0;
+
+var startTime, endTime;
+
+function start() {
+  startTime = new Date();
+};
+
+function end() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  return seconds;
+}
 
 function animate(time){
     for (var i = 0; i < traffic.length; i++) traffic[i].update(road.borders, []);
@@ -132,6 +150,15 @@ function animate(time){
         traffic_skips = 0;
         prev_traffic_distance = 0;
         console.log("new traffic");
+        
+        var dif = end();
+        console.log(dif);
+
+        if (dif > 60*10){
+            save();
+            console.log("reboot");
+            window.location.reload();
+        }
     }
 
     var retry = true;
