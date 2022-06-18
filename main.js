@@ -9,10 +9,12 @@ const net_ctx = net_canvas.getContext("2d");
 
 const road  = new Road(car_canvas.width/2, car_canvas.width*0.9);
 
-const N = 1000;
+const N = 500;
 
 const testers = gen_cars(N, "AI");
 // const traffic = gen_cars(N/20, "DUMMY");
+
+
 var traffic=[
     new Car(road.get_lane_center(Math.floor(Math.random() * road.num_lanes)),-100,30,50,"DUMMY",2),
     new Car(road.get_lane_center(Math.floor(Math.random() * road.num_lanes)),-300,30,50,"DUMMY",2),
@@ -124,7 +126,7 @@ function animate(time){
     net_ctx.lineDashOffset =-time/50;
     Visualizer.drawNetwork(net_ctx, best_car.brain);
 
-    if (traffic_skips >= 500){
+    if (traffic_skips >= 300){
         traffic=[];
         traffic=new_traffic();
         traffic_skips = 0;
@@ -134,7 +136,7 @@ function animate(time){
 
     var retry = true;
     for (var i = 0; i < testers.length; i++){
-        if (!testers[i].damaged){
+        if (!testers[i].damaged || testers[i].speed !=0){
             retry = false;
             break;
         }
